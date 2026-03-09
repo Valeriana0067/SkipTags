@@ -1,0 +1,52 @@
+function TagSplit(TagString){
+    var SplitedTag = new Array;
+    let SingleTagS = 0;
+    let SingleTagE = 0;
+    for (var i = 0; i < TagString.length; i++) {
+        if (/[ ]|[,]/.test(TagString[i]) == true) {
+            SingleTagE = i;
+            if (SingleTagS < SingleTagE) {
+                SplitedTag.push(TagString.substring(SingleTagS, SingleTagE));
+            }
+            SingleTagS = i + 1;
+        }
+    }
+    return SplitedTag;
+}
+
+function IgnoreMultiSpace(array1) {
+    var JointResult = "";
+    for (let times = 0; times <= array1.length - 1; times++) {
+        if (array1[times] != undefined) {
+            JointResult = JointResult + array1[times] + " ";
+        }
+        else {
+
+        }
+    }
+    JointResult = JointResult.substring(0, JointResult.length - 1);
+    return JointResult;
+}
+
+function TagConv() {
+    var InputTags = document.getElementById("taginput").value.toLowerCase().replace(/[\'\"\\\/\b\f\n\r\t]/g, "");
+    var ListTagInput = TagSplit(InputTags);
+    var ListTagFin = new Array(ListTagInput.length).fill(undefined);
+    var ListTagExce = new Array(ListTagInput.length).fill(undefined);
+    for (let i = 0, exceptionTag = 0; i <= ListTagInput.length; i++) {
+        if (ListTagInput[i] in FullTagList == true) {
+            ListTagFin[i] = FullTagList[ListTagInput[i]];
+        }
+        else {
+            ListTagExce[exceptionTag] = ListTagInput[i];
+            exceptionTag++;
+
+        }
+
+    }
+    var OutputTags = IgnoreMultiSpace(ListTagFin);
+    var ExceptTags = IgnoreMultiSpace(ListTagExce);
+    document.getElementById("tagoutput").innerHTML = OutputTags;
+    document.getElementById("tagexcept").innerHTML = ExceptTags;
+    return 0;
+}
