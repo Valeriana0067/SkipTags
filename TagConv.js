@@ -3,7 +3,7 @@ function TagSplit(TagString){
     let SingleTagS = 0;
     let SingleTagE = 0;
     for (var i = 0; i < TagString.length; i++) {
-        if (/[ ]|[,]/.test(TagString[i]) == true) {
+        if (/[ ]|[,]|[\n]/.test(TagString[i]) == true) {
             SingleTagE = i;
             if (SingleTagS < SingleTagE) {
                 SplitedTag.push(TagString.substring(SingleTagS, SingleTagE));
@@ -29,7 +29,7 @@ function IgnoreMultiSpace(array1) {
 }
 
 function TagConv() {
-    var InputTags = document.getElementById("taginput").value.toLowerCase().replace(/[\'\"\\\/\b\f\n\r\t]/g, "");
+    var InputTags = document.getElementById("taginput").value.toLowerCase().replace(/[\'\"\\\/\b\f\r\t]/g, "")+" ";
     var ListTagInput = TagSplit(InputTags);
     var ListTagFin = new Array(ListTagInput.length).fill(undefined);
     var ListTagExce = new Array(ListTagInput.length).fill(undefined);
