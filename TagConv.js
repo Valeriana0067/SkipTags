@@ -28,22 +28,42 @@ function IgnoreMultiSpace(array1) {
     return JointResult;
 }
 
+function GetKeyByValue(obj, value) {
+  return Object.keys(obj).find(key => obj[key] === value);
+}
+
 function TagConv() {
     var InputTags = document.getElementById("taginput").value.toLowerCase().replace(/[\'\"\\\/\b\f\r\t]/g, "")+" ";
     var ListTagInput = TagSplit(InputTags);
     var ListTagFin = new Array(ListTagInput.length).fill(undefined);
     var ListTagExce = new Array(ListTagInput.length).fill(undefined);
-    for (let i = 0, exceptionTag = 0; i <= ListTagInput.length; i++) {
-        if (ListTagInput[i] in FullTagList == true) {
-            ListTagFin[i] = FullTagList[ListTagInput[i]];
-        }
-        else {
-            ListTagExce[exceptionTag] = ListTagInput[i];
-            exceptionTag++;
+    var mode = document.getElementById('modeselection').value;
+    switch(mode){
+        case "1":
+            for (let i = 0, exceptionTag = 0; i <= ListTagInput.length; i++) {
+                if (ListTagInput[i] in FullTagList == true) {
+                ListTagFin[i] = FullTagList[ListTagInput[i]];
+                }
+            else {
+                ListTagExce[exceptionTag] = ListTagInput[i];
+                exceptionTag++;
 
-        }
-
+                }
+            }
+            break;
+        case "2":
+            for (let i = 0, exceptionTag = 0; i <= ListTagInput.length; i++) {
+                if (Object.values(FullTagList).includes(ListTagInput[i]) == true) {
+                ListTagFin[i] = GetKeyByValue(FullTagList, ListTagInput[i]);
+                }
+            else {
+                ListTagExce[exceptionTag] = ListTagInput[i];
+                exceptionTag++;
+                }
+            }
+            break;
     }
+    
     var OutputTags = IgnoreMultiSpace(ListTagFin);
     var ExceptTags = IgnoreMultiSpace(ListTagExce);
     document.getElementById("tagoutput").innerHTML = OutputTags;
